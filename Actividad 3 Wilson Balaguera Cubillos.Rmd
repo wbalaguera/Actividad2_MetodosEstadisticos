@@ -32,16 +32,11 @@ library(ggplot2)
 
 ```{r}
 ##datos
-
 datos=subset(vivienda4)  
-dat_apart=subset(datos,datos$tipo=="Apartamento")
-dat_casa=subset(datos,datos$tipo=="Casa")
 ```
 
 
 # <b style= 'color:#aa0000' > Análisis  Descriptivo </b> {data-navmenu="Análisis Regresión Lineal"}
-
-
 
 Column {data-width=500 }
 --------------------------------------------
@@ -459,7 +454,7 @@ stargazer(regresion, regresionlog, regresionlogarea, regresionlog2, type="text",
              column.labels   = c("regresion", "regresion log precio", "regresion log area", "regresion log area y log precio"     ))
 ```
 
-#  <b style= 'color:#aa0000' >Modelo 1 - Simulaciónes </b>
+#  <b style= 'color:#aa0000' >Prediccion de modelos </b>
 
 Column {data-width=300 }
 --------------------------------------------
@@ -467,7 +462,7 @@ Column {data-width=300 }
 ### Simulacion Regresion Lineal
 
 ```{r}
-p=predict(regresion,newdata =list(areaconst=110))
+p=predict(regresion,newdata =list(areaconst=110) , interval = "confidence", level = 0.95)
 pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(p,1)," millones" )
 ```
 Para una area de 110 m2 el precio promedio
@@ -477,7 +472,7 @@ estaria en `r round(p,1)`  millones.
 ### Simulacion log Precio
 
 ```{r}
-pl=exp(predict(regresionlog,newdata =list(areaconst=110)))
+pl=exp(predict(regresionlog,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
 predlog=paste("Para una area de 110 m2 el precio promedio estaria en", round(pl,1)," millones" )
 ```
 Para una area de 110 m2 el precio promedio
@@ -487,7 +482,7 @@ estaria en `r round(pl,1)`  millones.
 ### Simulacion log Area
 
 ```{r}
-plarea=exp(predict(regresionlogarea,newdata =list(areaconst=110)))
+plarea=exp(predict(regresionlogarea,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
 pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(plarea,1)," millones" )
 ```
 Para una area de 110 m2 el precio promedio
@@ -498,7 +493,7 @@ estaria en `r round(plarea,1)`  millones.
 ### Simulacion log Precio log area
 
 ```{r}
-pl2=exp(predict(regresionlog2,newdata =list(areaconst=110)))
+pl2=exp(predict(regresionlog2,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
 pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(pl2,1)," millones" )
 ```
 Para una area de 110 m2 el precio promedio
