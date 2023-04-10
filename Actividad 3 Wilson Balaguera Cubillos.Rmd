@@ -26,13 +26,14 @@ output:
 library(flexdashboard)
 library(paqueteMET)  
 library(ggplot2)
+library(MASS)
 # Install thematic and un-comment for themed static plots (i.e., ggplot2)
 # thematic::thematic_rmd()
 ```
 
 ```{r}
-##datos
-datos=subset(vivienda4)  
+datostotal=subset(vivienda4)
+datos=subset(datostotal,datostotal$tipo=="Apartamento")
 ```
 
 
@@ -113,11 +114,9 @@ regresion
 Column {data-width=800 }
 --------------------------------------------
 
-### 5. Bondad y Ajuste R2
 
-```{r}
-summary(regresion)
-```
+
+
 
 ### 4. Intervalo de confianza
 
@@ -177,6 +176,8 @@ Column {data-width=400 }
 regresionlog2=lm(log(preciom)~log(areaconst),data=datos)
 summary(regresionlog2)
 ```
+
+
 
 # <b style= 'color:#aa0000' >Supuestos </b>  
 
@@ -380,43 +381,29 @@ Column {data-width=600 }
 --------------------------------------------
 
 ### Validacion de normalidad - Test de Shapiro - Wilk
-
 ```{r}
 shapiro.test(regresionlog2$residuals)
 ```
 
-
 ### Validacion de normalidad - Test de Jarque-Bera
-
 ```{r}
 library(normtest)
 normtest::jb.norm.test(regresionlog2$residuals)
-
 ```
 
-
 ### Validacion de normalidad - Test de Anderson-Darling
-
 ```{r}
  library(nortest)
 ad.test(regresionlog2$residuals)
 ```
 
-
-
-
-
 ### Validacion de normalidad- Test de Lilliefors (Kolmogorov-Smirnov)
-
 ```{r}
 lillie.test(regresionlog2$residuals)
 ```
 
-
-
 Column {data-width=600 }
 --------------------------------------------
-
 
 ###  Validacion Constante Test de Breusch-Pagan
 
@@ -463,30 +450,24 @@ Column {data-width=300 }
 
 ```{r}
 p=predict(regresion,newdata =list(areaconst=110) , interval = "confidence", level = 0.95)
-pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(p,1)," millones" )
+p
 ```
-Para una area de 110 m2 el precio promedio
-estaria en `r round(p,1)`  millones.
+
 
 
 ### Simulacion log Precio
 
 ```{r}
 pl=exp(predict(regresionlog,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
-predlog=paste("Para una area de 110 m2 el precio promedio estaria en", round(pl,1)," millones" )
+pl
 ```
-Para una area de 110 m2 el precio promedio
-estaria en `r round(pl,1)`  millones.
-
 
 ### Simulacion log Area
 
 ```{r}
 plarea=exp(predict(regresionlogarea,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
-pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(plarea,1)," millones" )
+plarea
 ```
-Para una area de 110 m2 el precio promedio
-estaria en `r round(plarea,1)`  millones.
 
 
 
@@ -494,8 +475,5 @@ estaria en `r round(plarea,1)`  millones.
 
 ```{r}
 pl2=exp(predict(regresionlog2,newdata =list(areaconst=110), interval = "confidence", level = 0.95))
-pred=paste("Para una area de 110 m2 el precio promedio estaria en", round(pl2,1)," millones" )
+pl2
 ```
-Para una area de 110 m2 el precio promedio
-estaria en `r round(pl2,1)`  millones.
-
